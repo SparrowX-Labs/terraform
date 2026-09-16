@@ -5,6 +5,14 @@ terraform {
       version = "~> 6.0"
     }
   }
+
+  backend "s3" {
+    bucket       = "sparrowx-terraform-state-1237712"
+    key          = "terraform.tfstate"
+    region       = "eu-west-1"
+    use_lockfile = true
+  }
+
 }
 
 provider "aws" {

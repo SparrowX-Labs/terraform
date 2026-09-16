@@ -10,6 +10,7 @@ terraform {
     bucket       = "sparrowx-terraform-state-1237712"
     key          = "terraform.tfstate"
     region       = "eu-west-1"
+    profile      = "sparrowx-terraform-acc"
     use_lockfile = true
   }
 

@@ -40,4 +40,13 @@ jobs:
         run: terraform plan -out=tfplan
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+        run: |
+          terraform apply -auto-approve tfplan -no-color | tee apply.txt
+
+          {
+            echo "## Terraform Apply"
+            echo
+            echo '```text'
+            cat apply.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

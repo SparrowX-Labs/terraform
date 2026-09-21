@@ -1,20 +1,22 @@
-name: Terraform Apply
+name: Terraform Prod Plan
 
 on:
   pull_request:
-    types: [closed]
-    branches:
-      - main
     paths:
-      - "**.tf"
-      - "**.tfvars"
-      - ".github/workflows/terraform-plan.yml"
+      - "environments/prod/**"
+      - "modules/**"
+      - ".github/workflows/terraform-prod-plan.yml"
 
   workflow_dispatch:
 
 permissions:
   id-token: write
   contents: read
+  pull-requests: write
+
+defaults:
+  run:
+    working-directory: environments/prod
 
 jobs:
   terraform:
@@ -39,16 +41,14 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        run: terraform plan -no-color | tee plan.txt
 
-      - name: Terraform Apply
+      - name: Add plan to summary
         run: |
-          terraform apply -auto-approve tfplan -no-color | tee apply.txt
-
           {
-            echo "## Terraform Apply"
+            echo "## Terraform Prod Plan"
             echo
             echo '```text'
-            cat apply.txt
+            cat plan.txt
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"

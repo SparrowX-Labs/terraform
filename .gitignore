@@ -8,10 +8,11 @@ crash.*.log
 # Terraform variable files
 *.tfvars
 *.tfvars.json
-local-variables.tf
 
 # Override files
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
+
+run-local.txt

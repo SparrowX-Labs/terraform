@@ -1,11 +1,11 @@
-name: Terraform Plan
+name: Terraform Dev Plan
 
 on:
   pull_request:
     paths:
-      - "**.tf"
-      - "**.tfvars"
-      - ".github/workflows/terraform-plan.yml"
+      - "environments/dev/**"
+      - "modules/**"
+      - ".github/workflows/terraform-dev-plan.yml"
 
   workflow_dispatch:
 
@@ -13,6 +13,10 @@ permissions:
   id-token: write
   contents: read
   pull-requests: write
+
+defaults:
+  run:
+    working-directory: environments/dev
 
 jobs:
   terraform:
@@ -37,31 +41,14 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        id: plan
-        run: |
-          terraform plan -no-color | tee plan.txt
+        run: terraform plan -no-color | tee plan.txt
 
+      - name: Add plan to summary
+        run: |
           {
-            echo "## Terraform Plan"
+            echo "## Terraform Dev Plan"
             echo
             echo '```text'
             cat plan.txt
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Comment Terraform Plan on PR
-        if: github.event_name == 'pull_request'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          {
-            echo "## Terraform Plan"
-            echo
-            echo '```text'
-            cat plan.txt
-            echo '```'
-          } > plan-comment.md
-
-          gh pr comment "${{ github.event.pull_request.number }}" \
-            --body-file plan-comment.md
-

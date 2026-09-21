@@ -5,7 +5,7 @@ on:
     paths:
       - "environments/prod/**"
       - "modules/**"
-      - ".github/workflows/terraform-prod-plan.yml"
+      - ".github/workflows/prod-plan.yml"
 
   workflow_dispatch:
 
@@ -19,7 +19,8 @@ defaults:
     working-directory: environments/prod
 
 jobs:
-  terraform:
+  terraform-prod-plan:
+    name: Terraform Prod Plan
     runs-on: ubuntu-latest
 
     steps:

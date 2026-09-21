@@ -5,7 +5,7 @@ on:
     paths:
       - "environments/dev/**"
       - "modules/**"
-      - ".github/workflows/terraform-dev-plan.yml"
+      - ".github/workflows/dev-plan.yml"
 
   workflow_dispatch:
 
@@ -19,7 +19,8 @@ defaults:
     working-directory: environments/dev
 
 jobs:
-  terraform:
+  terraform-dev-plan:
+    name: Terraform Dev Plan
     runs-on: ubuntu-latest
 
     steps:

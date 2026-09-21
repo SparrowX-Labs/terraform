@@ -8,7 +8,7 @@ on:
     paths:
       - "environments/dev/**"
       - "modules/**"
-      - ".github/workflows/terraform-dev-apply.yml"
+      - ".github/workflows/dev-apply.yml"
 
   workflow_dispatch:
 
@@ -21,9 +21,10 @@ defaults:
     working-directory: environments/dev
 
 jobs:
-  terraform:
+  terraform-dev-apply:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    name: Terraform Dev Apply
 
     steps:
       - name: Checkout

@@ -1,4 +1,3 @@
-/*
 resource "aws_vpc" "dev-vpc-test" {
   cidr_block       = "10.0.0.0/16"
   instance_tenancy = "default"
@@ -7,4 +6,3 @@ resource "aws_vpc" "dev-vpc-test" {
     Name = "dev-vpc-test"
   }
 }
-*/

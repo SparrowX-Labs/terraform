@@ -1,0 +1,54 @@
+name: Terraform Prod Plan
+
+on:
+  pull_request:
+    paths:
+      - "environments/prod/**"
+      - "modules/**"
+      - ".github/workflows/terraform-prod-plan.yml"
+
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+defaults:
+  run:
+    working-directory: environments/prod
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/terraform-github-actions
+          aws-region: eu-west-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -no-color | tee plan.txt
+
+      - name: Add plan to summary
+        run: |
+          {
+            echo "## Terraform Prod Plan"
+            echo
+            echo '```text'
+            cat plan.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

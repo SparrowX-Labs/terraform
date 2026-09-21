@@ -10,7 +10,6 @@ terraform {
     bucket       = "sparrowx-terraform-state-1237712"
     key          = "terraform.tfstate"
     region       = "eu-west-1"
-    profile      = "sparrowx-terraform-acc"
     use_lockfile = true
   }
 
@@ -18,10 +17,4 @@ terraform {
 
 provider "aws" {
   region = "eu-west-1"
-  profile = "${var.aws_profile}"
-
-  assume_role {
-    role_arn = "arn:aws:iam::${var.aws_account_id}:role/${var.aws_execution_role}"
-  }
-
 }

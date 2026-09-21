@@ -8,7 +8,7 @@ on:
     paths:
       - "environments/prod/**"
       - "modules/**"
-      - ".github/workflows/terraform-prod-apply.yml"
+      - ".github/workflows/prod-apply.yml"
 
   workflow_dispatch:
 
@@ -21,9 +21,10 @@ defaults:
     working-directory: environments/prod
 
 jobs:
-  terraform:
+  terraform-prod-apply:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    name: Terraform Prod Apply
 
     steps:
       - name: Checkout

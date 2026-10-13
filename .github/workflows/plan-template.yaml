@@ -29,7 +29,7 @@ jobs:
             echo "Error: Invalid environment '$TARGET_ENV'. Allowed values: dev, prod."
             exit 1
           else
-            echo "WORK_DIR=environments/${{ inputs.env }}" >> "$GITHUB_ENV"
+            echo "WORK_DIR=environments/$TARGET_ENV" >> "$GITHUB_ENV"
           fi
 
       - name: Checkout

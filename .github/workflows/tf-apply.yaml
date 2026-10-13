@@ -25,11 +25,11 @@ jobs:
     needs: detect-changes
     if: needs.detect-changes.outputs.dev == 'true'
     with:
-      env: dev
+      target-env: dev
 
   prod-plan:
     uses: ./.github/workflows/apply-template.yaml
     needs: detect-changes
     if: needs.detect-changes.outputs.prod == 'true'
     with:
-      env: prod
+      target-env: prod

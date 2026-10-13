@@ -54,7 +54,7 @@ jobs:
       - name: Terraform Apply
         working-directory: environments/${{ inputs.target-env }}
         run: |
-          terraform apply -input=false -auto-approve tfplan -no-color | tee apply.txt
+          terraform apply -input=false -auto-approve tfplan -no-color | tee ../../apply.txt
 
           {
             echo "## Terraform Apply"

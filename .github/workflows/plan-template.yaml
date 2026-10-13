@@ -50,7 +50,7 @@ jobs:
 
       - name: Terraform Plan
         working-directory: environments/${{ inputs.target-env }}
-        run: terraform plan -input=false -no-color | tee plan.txt
+        run: terraform plan -input=false -no-color | tee ../../plan.txt
 
       - name: Add plan to summary
         run: |

@@ -1,0 +1,42 @@
+name: Detect Changes
+
+on:
+  workflow_call:
+    outputs:
+      dev:
+        description: Changes Detected for Dev environment
+        value: ${{ jobs.detect-changes.outputs.dev }}
+      prod:
+        description: Changes Detected for Prod environment
+        value: ${{ jobs.detect-changes.outputs.prod }}
+
+permissions:
+  contents: read
+  pull-requests: read
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  TARGET_ENV: ${{ inputs.env }}
+
+jobs:
+  detect-changes:
+    name: Detect changed files
+    runs-on: ubuntu-latest
+    outputs:
+      dev: ${{ steps.filter.outputs.dev }}
+      prod: ${{ steps.filter.outputs.prod }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            dev:
+              - 'environments/dev/**'
+              - '.github/workflows/**'
+              - 'modules/**'
+            prod:
+              - 'environments/prod/**'

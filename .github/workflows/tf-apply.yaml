@@ -1,0 +1,35 @@
+name: Terraform Apply
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+    paths:
+      - "environments/**"
+      - "modules/**"
+      - ".github/workflows/**"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  detect-changes:
+    name: Detect changed files
+    uses: ./.github/workflows/detect-changes.yaml
+
+
+  dev-plan:
+    uses: ./.github/workflows/apply-template.yaml
+    needs: detect-changes
+    if: needs.detect-changes.outputs.dev == 'true'
+    with:
+      target-env: dev
+
+  prod-plan:
+    uses: ./.github/workflows/apply-template.yaml
+    needs: detect-changes
+    if: needs.detect-changes.outputs.prod == 'true'
+    with:
+      target-env: prod

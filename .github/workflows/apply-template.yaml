@@ -1,0 +1,65 @@
+name: Terraform Apply
+
+on:
+  workflow_call:
+    inputs:
+      target-env:
+        description: Environment dev or prod
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  TARGET_ENV: ${{ inputs.target-env }}
+
+jobs:
+  terraform-apply:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate environment
+        run: |
+          if [[ "$TARGET_ENV" != "dev" && "$TARGET_ENV" != "prod" ]]; then
+            echo "Error: Invalid environment '$TARGET_ENV'. Allowed values: dev, prod."
+            exit 1
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/${{ vars.AWS_ROLE_NAME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: environments/${{ inputs.target-env }}
+        run: terraform init
+
+      - name: Terraform Plan
+        working-directory: environments/${{ inputs.target-env }}
+        run: terraform plan -input=false -out=tfplan
+
+      - name: Terraform Apply
+        working-directory: environments/${{ inputs.target-env }}
+        run: |
+          terraform apply -input=false -auto-approve tfplan -no-color | tee ../../apply.txt
+
+          {
+            echo "## Terraform Apply"
+            echo
+            echo '```text'
+            cat apply.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

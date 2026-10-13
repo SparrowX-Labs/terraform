@@ -17,18 +17,18 @@ permissions:
 jobs:
   detect-changes:
     name: Detect changed files
-    uses: .github/workflows/detect-changes.yaml
+    uses: ./.github/workflows/detect-changes.yaml
 
 
   dev-plan:
-    uses: .github/workflows/apply-template.yaml
+    uses: ./.github/workflows/apply-template.yaml
     needs: detect-changes
     if: needs.detect-changes.outputs.dev == 'true'
     with:
       env: dev
 
   prod-plan:
-    uses: .github/workflows/apply-template.yaml
+    uses: ./.github/workflows/apply-template.yaml
     needs: detect-changes
     if: needs.detect-changes.outputs.prod == 'true'
     with:

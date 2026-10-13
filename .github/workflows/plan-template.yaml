@@ -28,8 +28,6 @@ jobs:
           if [[ "$TARGET_ENV" != "dev" && "$TARGET_ENV" != "prod" ]]; then
             echo "Error: Invalid environment '$TARGET_ENV'. Allowed values: dev, prod."
             exit 1
-          else
-            echo "WORK_DIR=environments/$TARGET_ENV" >> "$GITHUB_ENV"
           fi
 
       - name: Checkout
@@ -47,11 +45,11 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        working-directory: $WORK_DIR
+        working-directory: environments/${{ inputs.target-env }}
         run: terraform init
 
       - name: Terraform Plan
-        working-directory: $WORK_DIR
+        working-directory: environments/${{ inputs.target-env }}
         run: terraform plan -input=false -no-color | tee plan.txt
 
       - name: Add plan to summary

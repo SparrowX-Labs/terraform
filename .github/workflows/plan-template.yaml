@@ -1,4 +1,4 @@
-name: Terraform Plan
+name: Terraform Plan Template
 
 on:
   workflow_call:
@@ -19,7 +19,7 @@ env:
 
 jobs:
   terraform-plan:
-    name: Terraform Plan
+    name: Terraform Plan 
     runs-on: ubuntu-latest
 
     steps:

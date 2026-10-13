@@ -23,8 +23,6 @@ jobs:
 
     steps:
       - name: Validate environment
-        env:
-          TARGET_ENV: ${{ inputs.env }}
         run: |
           if [[ "$TARGET_ENV" != "dev" && "$TARGET_ENV" != "prod" ]]; then
             echo "Error: Invalid environment '$TARGET_ENV'. Allowed values: dev, prod."

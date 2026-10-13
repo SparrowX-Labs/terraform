@@ -1,0 +1,38 @@
+name: Terraform Plan
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    paths:
+      - "environments/**"
+      - "modules/**"
+      - ".github/workflows/**"
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+
+jobs:
+  detect-changes:
+    name: Detect changed files
+    uses: .github/workflows/detect-changes.yaml
+
+
+  dev-plan:
+    uses: .github/workflows/plan-template.yaml
+    needs: detect-changes
+    if: needs.detect-changes.outputs.dev == 'true'
+    with:
+      env: dev
+
+  prod-plan:
+    uses: .github/workflows/plan-template.yaml
+    needs: detect-changes
+    if: needs.detect-changes.outputs.prod == 'true'
+    with:
+      env: prod

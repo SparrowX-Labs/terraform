@@ -1,4 +1,4 @@
-name: Terraform Apply
+name: Terraform Apply Template
 
 on:
   workflow_call:
@@ -54,6 +54,7 @@ jobs:
       - name: Terraform Apply
         working-directory: environments/${{ inputs.target-env }}
         run: |
+          set -o pipefail
           terraform apply -input=false -auto-approve tfplan -no-color | tee ../../apply.txt
 
           {

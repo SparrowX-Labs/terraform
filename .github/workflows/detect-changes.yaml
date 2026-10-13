@@ -1,4 +1,4 @@
-name: Detect Changes
+name: Detect Changes Template
 
 on:
   workflow_call:

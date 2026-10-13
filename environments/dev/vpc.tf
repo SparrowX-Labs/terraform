@@ -5,7 +5,7 @@ module "network" {
 
   vpc_cidr = var.vpc_cidr
 
-  azs = var.public_subnets
+  azs = var.azs
 
   public_subnets = var.public_subnets
 

@@ -1,8 +1,31 @@
-resource "aws_vpc" "prod-vpc-test" {
-  cidr_block       = "10.1.0.0/16"
-  instance_tenancy = "default"
+module "network" {
+  source = "../../modules/network"
+
+  name = "sparrowx-prod-vpc"
+
+  vpc_cidr = "10.10.0.0/16"
+
+  azs = [
+    "eu-west-1a",
+    "eu-west-1b",
+    "eu-west-1c",
+  ]
+
+  public_subnets = [
+    "10.10.1.0/24",
+    "10.10.2.0/24",
+    "10.10.3.0/24",
+  ]
+
+  private_subnets = [
+    "10.10.4.0/24",
+    "10.10.5.0/24",
+    "10.10.6.0/24",
+  ]
 
   tags = {
-    Name = "prod-vpc-test"
+    Project     = "sparrowx"
+    Environment = "prod"
+    Terraform   = "true"
   }
 }

@@ -18,12 +18,12 @@ output "oidc_provider_arn" {
   value       = module.eks.oidc_provider_arn
 }
 
-output "node_iam_role_arn" {
+output "system_node_iam_role_arn" {
   description = "IAM role ARN used by the managed node group."
   value       = module.eks.eks_managed_node_groups["system_node_group"].iam_role_arn
 }
 
-output "node_iam_role_arn" {
+output "workload_node_iam_role_arn" {
   description = "IAM role ARN used by the managed node group."
   value       = module.eks.eks_managed_node_groups["workload_node_group"].iam_role_arn
 }

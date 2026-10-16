@@ -3,6 +3,11 @@ variable "name" {
   type        = string
 }
 
+variable "cli_access_role_name" {
+  description = "IAM role name used for local CLI access to the EKS cluster."
+  type        = string
+}
+
 variable "vpc_cidr" {
   description = "CIDR block assigned to the VPC."
   type        = string

@@ -1,6 +1,7 @@
-name     = "sparrowx-labs-dev"
-vpc_cidr = "10.20.0.0/16"
-azs      = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+name                 = "sparrowx-labs-dev"
+vpc_cidr             = "10.20.0.0/16"
+cli_access_role_name = "eks-admin"
+azs                  = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
 
 # same order as azs
 public_subnets  = ["10.20.1.0/24", "10.20.2.0/24", "10.20.3.0/24"]

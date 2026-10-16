@@ -12,3 +12,6 @@ override.tf.json
 *_override.tf.json
 
 run-local.txt
+
+# Local-only helper scripts
+scripts/

@@ -19,22 +19,49 @@ module "eks" {
   authentication_mode                      = "API_AND_CONFIG_MAP"
   enable_cluster_creator_admin_permissions = true
 
+  access_entries = {
+    cli_access = {
+      principal_arn = data.aws_iam_role.cli_access.arn
+
+      policy_associations = {
+        admin = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+
+          access_scope = {
+            type = "cluster"
+          }
+        }
+      }
+    }
+  }
+
   addons = {
-    coredns                = {}
-    kube-proxy             = {}
-    vpc-cni                = {
+    coredns    = {}
+    kube-proxy = {}
+    vpc-cni = {
       before_compute = true
     }
     eks-pod-identity-agent = {
       before_compute = true
     }
-    aws-ebs-csi-driver = {}
+    aws-ebs-csi-driver = {
+      namespace_config = {
+        namespace = "kube-system"
+      }
+
+      pod_identity_association = [
+        {
+          service_account = "ebs-csi-controller-sa"
+          role_arn        = aws_iam_role.ebs_csi.arn
+        }
+      ]
+    }
   }
 
   # EKS Managed Node Group(s)
   eks_managed_node_groups = {
     system = {
-      subnet_ids     = var.private_subnet_ids
+      subnet_ids = var.private_subnet_ids
       # Starting on 1.30, AL2023 is the default AMI type for EKS managed node groups
       ami_type       = var.system_ami_type
       instance_types = var.system_instance_types
@@ -57,7 +84,7 @@ module "eks" {
     }
 
     workload = {
-      subnet_ids     = var.private_subnet_ids
+      subnet_ids = var.private_subnet_ids
       # Starting on 1.30, AL2023 is the default AMI type for EKS managed node groups
       ami_type       = var.workload_ami_type
       instance_types = var.workload_instance_types

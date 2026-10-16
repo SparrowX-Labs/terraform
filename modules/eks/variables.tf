@@ -20,6 +20,11 @@ variable "private_subnet_ids" {
   type        = list(string)
 }
 
+variable "cli_access_role_name" {
+  description = "Name of the IAM role used for local CLI access to the EKS cluster."
+  type        = string
+}
+
 
 # Managed Node Group variables
 variable "system_ami_type" {

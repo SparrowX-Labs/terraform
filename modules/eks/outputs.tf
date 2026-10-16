@@ -27,3 +27,8 @@ output "workload_node_iam_role_arn" {
   description = "IAM role ARN used by the managed node group."
   value       = module.eks.eks_managed_node_groups["workload"].iam_role_arn
 }
+
+output "ebs_csi_role_arn" {
+  description = "IAM role ARN used by the EBS CSI driver through EKS Pod Identity."
+  value       = aws_iam_role.ebs_csi.arn
+}

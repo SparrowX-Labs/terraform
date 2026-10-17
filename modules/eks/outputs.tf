@@ -32,3 +32,23 @@ output "ebs_csi_role_arn" {
   description = "IAM role ARN used by the EBS CSI driver through EKS Pod Identity."
   value       = aws_iam_role.ebs_csi.arn
 }
+
+output "aws_load_balancer_controller_role_arn" {
+  description = "IAM role ARN used by the AWS Load Balancer Controller through EKS Pod Identity."
+  value       = aws_iam_role.aws_load_balancer_controller.arn
+}
+
+output "external_dns_role_arn" {
+  description = "IAM role ARN used by ExternalDNS through EKS Pod Identity."
+  value       = aws_iam_role.external_dns.arn
+}
+
+output "cluster_autoscaler_role_arn" {
+  description = "IAM role ARN used by Cluster Autoscaler through EKS Pod Identity."
+  value       = aws_iam_role.cluster_autoscaler.arn
+}
+
+output "external_secrets_role_arn" {
+  description = "IAM role ARN used by External Secrets through EKS Pod Identity."
+  value       = aws_iam_role.external_secrets.arn
+}

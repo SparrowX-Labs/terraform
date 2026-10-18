@@ -48,7 +48,7 @@ resource "aws_acm_certificate" "this" {
   }
 
   tags = merge(var.tags, {
-    Name = var.certificate_domain_name
+    Name = replace(var.certificate_domain_name, "*.", "wildcard.")
   })
 }
 

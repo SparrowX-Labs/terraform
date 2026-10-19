@@ -16,7 +16,7 @@ module "eks" {
   system_desired_size   = 2
 
   workload_ami_type       = "AL2023_x86_64_STANDARD"
-  workload_instance_types = ["t3.medium"]
+  workload_instance_types = ["t3.large"]
   workload_min_size       = 2
   workload_max_size       = 4
   workload_desired_size   = 2

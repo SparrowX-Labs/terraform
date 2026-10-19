@@ -56,6 +56,11 @@ data "aws_iam_policy_document" "aws_load_balancer_controller" {
       "ec2:GetCoipPoolUsage",
       "ec2:GetManagedPrefixListEntries",
       "ec2:GetSecurityGroupsForVpc",
+      "ec2:CreateSecurityGroup",
+      "ec2:CreateTags",
+      "ec2:AuthorizeSecurityGroupIngress",
+      "ec2:RevokeSecurityGroupIngress",
+      "ec2:DeleteSecurityGroup",
     ]
 
     resources = ["*"]
@@ -101,6 +106,7 @@ data "aws_iam_policy_document" "aws_load_balancer_controller" {
       "elasticloadbalancing:SetSecurityGroups",
       "elasticloadbalancing:SetSubnets",
       "elasticloadbalancing:SetWebAcl",
+      "elasticloadbalancing:AddListenerCertificates"
     ]
 
     resources = ["*"]
@@ -252,4 +258,14 @@ resource "aws_iam_role_policy" "external_secrets" {
   name   = "${var.name}-external-secrets"
   role   = aws_iam_role.external_secrets.id
   policy = data.aws_iam_policy_document.external_secrets.json
+}
+
+resource "aws_iam_role_policy_attachment" "crossplane_aws_s3" {
+  role       = aws_iam_role.crossplane_aws_s3.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "crossplane_aws_rds" {
+  role       = aws_iam_role.crossplane_aws_rds.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
 }

@@ -37,6 +37,20 @@ resource "aws_iam_role" "external_secrets" {
   tags = var.tags
 }
 
+resource "aws_iam_role" "crossplane_aws_s3" {
+  name               = "${var.name}-crossplane-aws-s3"
+  assume_role_policy = data.aws_iam_policy_document.pod_identity_assume_role.json
+
+  tags = var.tags
+}
+
+resource "aws_iam_role" "crossplane_aws_rds" {
+  name               = "${var.name}-crossplane-aws-rds"
+  assume_role_policy = data.aws_iam_policy_document.pod_identity_assume_role.json
+
+  tags = var.tags
+}
+
 resource "aws_eks_pod_identity_association" "aws_load_balancer_controller" {
   cluster_name    = var.name
   namespace       = "kube-system"
@@ -63,4 +77,18 @@ resource "aws_eks_pod_identity_association" "external_secrets" {
   namespace       = "external-secrets"
   service_account = "external-secrets"
   role_arn        = aws_iam_role.external_secrets.arn
+}
+
+resource "aws_eks_pod_identity_association" "crossplane_aws_s3" {
+  cluster_name    = var.name
+  namespace       = "crossplane-system"
+  service_account = "provider-aws-s3"
+  role_arn        = aws_iam_role.crossplane_aws_s3.arn
+}
+
+resource "aws_eks_pod_identity_association" "crossplane_aws_rds" {
+  cluster_name    = var.name
+  namespace       = "crossplane-system"
+  service_account = "provider-aws-rds"
+  role_arn        = aws_iam_role.crossplane_aws_rds.arn
 }

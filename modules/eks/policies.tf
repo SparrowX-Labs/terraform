@@ -269,3 +269,13 @@ resource "aws_iam_role_policy_attachment" "crossplane_aws_rds" {
   role       = aws_iam_role.crossplane_aws_rds.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
 }
+
+resource "aws_iam_role_policy_attachment" "crossplane_aws_ec2" {
+  role       = aws_iam_role.crossplane_aws_ec2.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "crossplane_aws_secretsmanager" {
+  role       = aws_iam_role.crossplane_aws_secretsmanager.name
+  policy_arn = "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
+}

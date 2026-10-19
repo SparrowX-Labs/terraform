@@ -51,6 +51,20 @@ resource "aws_iam_role" "crossplane_aws_rds" {
   tags = var.tags
 }
 
+resource "aws_iam_role" "crossplane_aws_ec2" {
+  name               = "${var.name}-crossplane-aws-ec2"
+  assume_role_policy = data.aws_iam_policy_document.pod_identity_assume_role.json
+
+  tags = var.tags
+}
+
+resource "aws_iam_role" "crossplane_aws_secretsmanager" {
+  name               = "${var.name}-crossplane-aws-secretsmanager"
+  assume_role_policy = data.aws_iam_policy_document.pod_identity_assume_role.json
+
+  tags = var.tags
+}
+
 resource "aws_eks_pod_identity_association" "aws_load_balancer_controller" {
   cluster_name    = var.name
   namespace       = "kube-system"
@@ -91,4 +105,18 @@ resource "aws_eks_pod_identity_association" "crossplane_aws_rds" {
   namespace       = "crossplane-system"
   service_account = "provider-aws-rds"
   role_arn        = aws_iam_role.crossplane_aws_rds.arn
+}
+
+resource "aws_eks_pod_identity_association" "crossplane_aws_ec2" {
+  cluster_name    = var.name
+  namespace       = "crossplane-system"
+  service_account = "provider-aws-ec2"
+  role_arn        = aws_iam_role.crossplane_aws_ec2.arn
+}
+
+resource "aws_eks_pod_identity_association" "crossplane_aws_secretsmanager" {
+  cluster_name    = var.name
+  namespace       = "crossplane-system"
+  service_account = "provider-aws-secretsmanager"
+  role_arn        = aws_iam_role.crossplane_aws_secretsmanager.arn
 }

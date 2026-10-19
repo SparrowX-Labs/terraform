@@ -62,3 +62,13 @@ output "crossplane_aws_rds_role_arn" {
   description = "IAM role ARN used by the Crossplane AWS RDS provider through EKS Pod Identity."
   value       = aws_iam_role.crossplane_aws_rds.arn
 }
+
+output "crossplane_aws_ec2_role_arn" {
+  description = "IAM role ARN used by the Crossplane AWS EC2 provider through EKS Pod Identity."
+  value       = aws_iam_role.crossplane_aws_ec2.arn
+}
+
+output "crossplane_aws_secretsmanager_role_arn" {
+  description = "IAM role ARN used by the Crossplane AWS Secrets Manager provider through EKS Pod Identity."
+  value       = aws_iam_role.crossplane_aws_secretsmanager.arn
+}

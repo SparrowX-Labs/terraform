@@ -344,7 +344,11 @@ resource "aws_iam_role_policy" "crossplane_aws_ecr" {
         "ecr:PutImage",
         "ecr:TagResource",
         "ecr:UntagResource",
-        "ecr:UploadLayerPart"
+        "ecr:UploadLayerPart",
+        "ecr:ListTagsForResource",
+        "ecr:PutImageScanningConfiguration",
+        "ecr:PutImageTagMutability",
+        "ecr:BatchDeleteImage"
       ]
       Resource = "*"
     }]

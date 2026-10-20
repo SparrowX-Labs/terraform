@@ -294,6 +294,26 @@ resource "aws_iam_role_policy" "crossplane_aws_rds_kms" {
   })
 }
 
+resource "aws_iam_role_policy" "crossplane_aws_rds_secretsmanager" {
+  name = "${var.name}-crossplane-aws-rds-secretsmanager"
+  role = aws_iam_role.crossplane_aws_rds.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = [
+        "secretsmanager:CreateSecret",
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:PutSecretValue",
+        "secretsmanager:TagResource",
+        "secretsmanager:UpdateSecret"
+      ]
+      Resource = "*"
+    }]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "crossplane_aws_ec2" {
   role       = aws_iam_role.crossplane_aws_ec2.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"

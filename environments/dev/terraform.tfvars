@@ -4,7 +4,7 @@ cli_access_role_name   = "eks-admin"
 dns_parent_domain      = "mo2cloud.com"
 dns_domain             = "dev.mo2cloud.com"
 dns_certificate_domain = "*.dev.mo2cloud.com"
-private_dns_domain     = "dev.internal"
+private_dns_domain     = "dev.sparrowx.internal"
 azs                    = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
 
 # same order as azs

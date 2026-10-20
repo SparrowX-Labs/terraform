@@ -323,3 +323,50 @@ resource "aws_iam_role_policy_attachment" "crossplane_aws_secretsmanager" {
   role       = aws_iam_role.crossplane_aws_secretsmanager.name
   policy_arn = "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
 }
+
+resource "aws_iam_role_policy" "crossplane_aws_ecr" {
+  name = "${var.name}-crossplane-aws-ecr"
+  role = aws_iam_role.crossplane_aws_ecr.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:CompleteLayerUpload",
+        "ecr:CreateRepository",
+        "ecr:DeleteRepository",
+        "ecr:DescribeImages",
+        "ecr:DescribeRepositories",
+        "ecr:GetRepositoryPolicy",
+        "ecr:ListImages",
+        "ecr:PutImage",
+        "ecr:TagResource",
+        "ecr:UntagResource",
+        "ecr:UploadLayerPart"
+      ]
+      Resource = "*"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "crossplane_aws_route53" {
+  name = "${var.name}-crossplane-aws-route53"
+  role = aws_iam_role.crossplane_aws_route53.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = [
+        "route53:ChangeResourceRecordSets",
+        "route53:GetChange",
+        "route53:GetHostedZone",
+        "route53:ListResourceRecordSets",
+        "route53:ListTagsForResource"
+      ]
+      Resource = "*"
+    }]
+  })
+}

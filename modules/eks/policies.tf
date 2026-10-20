@@ -270,6 +270,30 @@ resource "aws_iam_role_policy_attachment" "crossplane_aws_rds" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
 }
 
+resource "aws_iam_role_policy" "crossplane_aws_rds_kms" {
+  name = "${var.name}-crossplane-aws-rds-kms"
+  role = aws_iam_role.crossplane_aws_rds.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey*",
+        "kms:ReEncrypt*"
+      ]
+      Resource = [
+        data.aws_kms_key.rds.arn,
+        data.aws_kms_key.secretsmanager.arn
+      ]
+    }]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "crossplane_aws_ec2" {
   role       = aws_iam_role.crossplane_aws_ec2.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"

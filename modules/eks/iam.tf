@@ -2,6 +2,14 @@ data "aws_iam_role" "cli_access" {
   name = var.cli_access_role_name
 }
 
+data "aws_kms_key" "rds" {
+  key_id = "alias/aws/rds"
+}
+
+data "aws_kms_key" "secretsmanager" {
+  key_id = "alias/aws/secretsmanager"
+}
+
 resource "aws_iam_role" "ebs_csi" {
   name               = "${var.name}-ebs-csi"
   assume_role_policy = data.aws_iam_policy_document.pod_identity_assume_role.json

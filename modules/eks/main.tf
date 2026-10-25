@@ -90,7 +90,8 @@ module "eks" {
     }
 
     workload = {
-      subnet_ids = var.private_subnet_ids
+      subnet_ids             = var.private_subnet_ids
+      vpc_security_group_ids = [aws_security_group.workload_nodes.id]
       # Starting on 1.30, AL2023 is the default AMI type for EKS managed node groups
       ami_type       = var.workload_ami_type
       instance_types = var.workload_instance_types
@@ -106,4 +107,30 @@ module "eks" {
   }
 
   tags = var.tags
+}
+
+resource "aws_security_group" "workload_nodes" {
+  name        = "${var.name}-workload-nodes"
+  description = "Additional security group for workload nodes"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    description = "PostgreSQL from private VPC subnets"
+    protocol    = "tcp"
+    from_port   = 5432
+    to_port     = 5432
+    cidr_blocks = var.private_subnet_cidrs
+  }
+
+  egress {
+    description = "Allow workload node egress"
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = merge(var.tags, {
+    Name = "${var.name}-workload-nodes"
+  })
 }

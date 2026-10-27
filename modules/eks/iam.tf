@@ -102,7 +102,7 @@ resource "aws_eks_pod_identity_association" "external_dns" {
 }
 
 // Temp Association, deploying prod on the same cluster as a separate namespcase, instead of different cluster, for now
-resource "aws_eks_pod_identity_association" "external_dns" {
+resource "aws_eks_pod_identity_association" "external_dns_prod" {
   cluster_name    = var.name
   namespace       = "external-dns-prod"
   service_account = "external-dns"

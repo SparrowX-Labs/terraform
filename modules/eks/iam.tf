@@ -101,6 +101,14 @@ resource "aws_eks_pod_identity_association" "external_dns" {
   role_arn        = aws_iam_role.external_dns.arn
 }
 
+// Temp Association, deploying prod on the same cluster as a separate namespcase, instead of different cluster, for now
+resource "aws_eks_pod_identity_association" "external_dns_prod" {
+  cluster_name    = var.name
+  namespace       = "external-dns-prod"
+  service_account = "external-dns"
+  role_arn        = aws_iam_role.external_dns.arn
+}
+
 resource "aws_eks_pod_identity_association" "cluster_autoscaler" {
   cluster_name    = var.name
   namespace       = "kube-system"
